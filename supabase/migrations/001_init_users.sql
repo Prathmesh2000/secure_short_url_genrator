@@ -1,0 +1,24 @@
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+  email TEXT NOT NULL,
+  username TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+
+  is_email_verified BOOLEAN NOT NULL DEFAULT false,
+
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS ux_users_email
+  ON users (email);
+
+CREATE UNIQUE INDEX IF NOT EXISTS ux_users_username
+  ON users (username);
+
+ALTER TABLE users DISABLE ROW LEVEL SECURITY;
+
+COMMIT;
