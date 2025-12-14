@@ -7,4 +7,4 @@ kv_namespaces = [
 ]
 
 [vars]
-API_URL = "https://short-url-api.com"
+API_URL = "https://secure-short-url-genrator.onrender.com"

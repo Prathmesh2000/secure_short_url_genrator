@@ -29,19 +29,30 @@ app.use(errorHandler);
 let server: any;
 
 async function start() {
-  await db.query('SELECT 1');
-  console.log('[DB] connected');
-
-  server = app.listen(PORT, () => {
-    console.log(`[SERVER] listening on ${PORT}`);
-  });
-
-  server.on('error', (err: any) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error('PORT IN USE');
+  try {
+    // Check for required environment variables
+    if (!process.env.DATABASE_URL) {
+      console.error('[ERROR] DATABASE_URL environment variable is required');
       process.exit(1);
     }
-  });
+
+    await db.query('SELECT 1');
+    console.log('[DB] connected');
+
+    server = app.listen(PORT, () => {
+      console.log(`[SERVER] listening on ${PORT}`);
+    });
+
+    server.on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error('PORT IN USE');
+        process.exit(1);
+      }
+    });
+  } catch (error) {
+    console.error('[ERROR] Failed to start server:', error);
+    process.exit(1);
+  }
 }
 
 async function shutdown(signal: string) {
@@ -53,9 +64,20 @@ async function shutdown(signal: string) {
   }
 }
 
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
-process.on('SIGQUIT', shutdown);
-process.on('exit', shutdown);
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGQUIT', () => shutdown('SIGQUIT'));
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[ERROR] Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('[ERROR] Uncaught Exception:', error);
+  process.exit(1);
+});
 
 start();
