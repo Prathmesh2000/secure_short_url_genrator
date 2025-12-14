@@ -34,11 +34,17 @@ class ConflictError extends AppError {
         super(message, HttpStatusCodes.CONFLICT);
     }
 }
+class UnauthorizedError extends AppError {
+    constructor(message: string = 'Unauthorized') {
+        super(message, HttpStatusCodes.UNAUTHORIZED);
+    }
+}
 
 export {
     AppError,
     NotFoundError,
     ExpiredError,
     BadRequestError,
-    ConflictError
+    ConflictError,
+    UnauthorizedError
 };

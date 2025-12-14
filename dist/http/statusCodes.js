@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HttpStatusCodes = void 0;
+var HttpStatusCodes;
+(function (HttpStatusCodes) {
+    HttpStatusCodes[HttpStatusCodes["OK"] = 200] = "OK";
+    HttpStatusCodes[HttpStatusCodes["CREATED"] = 201] = "CREATED";
+    HttpStatusCodes[HttpStatusCodes["NO_CONTENT"] = 204] = "NO_CONTENT";
+    HttpStatusCodes[HttpStatusCodes["MOVED_PERMANENTLY"] = 301] = "MOVED_PERMANENTLY";
+    HttpStatusCodes[HttpStatusCodes["FOUND"] = 302] = "FOUND";
+    HttpStatusCodes[HttpStatusCodes["SEE_OTHER"] = 303] = "SEE_OTHER";
+    HttpStatusCodes[HttpStatusCodes["NOT_MODIFIED"] = 304] = "NOT_MODIFIED";
+    HttpStatusCodes[HttpStatusCodes["USE_PROXY"] = 305] = "USE_PROXY";
+    HttpStatusCodes[HttpStatusCodes["TEMPORARY_REDIRECT"] = 307] = "TEMPORARY_REDIRECT";
+    HttpStatusCodes[HttpStatusCodes["PERMANENT_REDIRECT"] = 308] = "PERMANENT_REDIRECT";
+    HttpStatusCodes[HttpStatusCodes["BAD_REQUEST"] = 400] = "BAD_REQUEST";
+    HttpStatusCodes[HttpStatusCodes["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
+    HttpStatusCodes[HttpStatusCodes["NOT_FOUND"] = 404] = "NOT_FOUND";
+    HttpStatusCodes[HttpStatusCodes["CONFLICT"] = 409] = "CONFLICT";
+    HttpStatusCodes[HttpStatusCodes["GONE"] = 410] = "GONE";
+    HttpStatusCodes[HttpStatusCodes["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
+    HttpStatusCodes[HttpStatusCodes["BAD_GATEWAY"] = 502] = "BAD_GATEWAY";
+    HttpStatusCodes[HttpStatusCodes["SERVICE_UNAVAILABLE"] = 503] = "SERVICE_UNAVAILABLE";
+    HttpStatusCodes[HttpStatusCodes["GATEWAY_TIMEOUT"] = 504] = "GATEWAY_TIMEOUT";
+})(HttpStatusCodes || (exports.HttpStatusCodes = HttpStatusCodes = {}));

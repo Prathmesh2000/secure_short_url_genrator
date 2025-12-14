@@ -1,5 +1,12 @@
+
 import { Response } from "express";
 import { HttpStatusCodes } from "./statusCodes";
+
+
+
+export const redirect = (res: Response, url: string) => {
+    res.redirect(url);
+};
 
 export const success = (res: Response, data: any) => {
     res.status(HttpStatusCodes.OK).send({

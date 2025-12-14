@@ -1,5 +1,5 @@
 BEGIN;
 
-ALTER TABLE users ADD COLUMN password_changed_at  TIMESTAMP NULL ;
+ALTER TABLE users ADD COLUMN password_updated_at  TIMESTAMP NULL ;
 
 COMMIT;

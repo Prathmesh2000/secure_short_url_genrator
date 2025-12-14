@@ -1,20 +1,23 @@
-import { Request } from "express";
-const OFFSET = 10_000_000;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateOtp = void 0;
+exports.encodeBase62 = encodeBase62;
+exports.generateShortCode = generateShortCode;
+exports.extractAccessMeta = extractAccessMeta;
+const OFFSET = 10000000;
 const MIN_LENGTH = 6;
 const BASE62_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const BASE = BASE62_ALPHABET.length; // 62
-
-export const generateOtp = () => {
+const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString().padStart(6, '0');
 };
-
-export function encodeBase62(num: number): string {
+exports.generateOtp = generateOtp;
+function encodeBase62(num) {
     if (!Number.isSafeInteger(num) || num < 0) {
         throw new Error('encodeBase62 expects a non-negative integer');
     }
-
-    if (num === 0) return BASE62_ALPHABET[0];
-
+    if (num === 0)
+        return BASE62_ALPHABET[0];
     let result = '';
     while (num > 0) {
         result = BASE62_ALPHABET[num % BASE] + result;
@@ -22,18 +25,14 @@ export function encodeBase62(num: number): string {
     }
     return result;
 }
-
-export function generateShortCode(id: number): string {
+function generateShortCode(id) {
     const encoded = encodeBase62(id + OFFSET);
     return encoded.padStart(MIN_LENGTH, 'a');
 }
-
-
-export function extractAccessMeta(req: Request) {
+function extractAccessMeta(req) {
     return {
-      ip: req.ip,
-      userAgent: req.headers['user-agent'] ?? null,
-      referer: req.headers['referer'] ?? null
+        ip: req.ip,
+        userAgent: req.headers['user-agent'] ?? null,
+        referer: req.headers['referer'] ?? null
     };
-  }
-  
+}

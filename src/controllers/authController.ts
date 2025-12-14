@@ -191,7 +191,7 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    await db.query('UPDATE users SET password_hash = $1, password_updated_at = NOW() WHERE email = $2', [passwordHash, email]);
+    await db.query('UPDATE users SET password_hash = $1, password_changed_at = NOW() WHERE email = $2', [passwordHash, email]);
     await db.query('DELETE FROM email_otps WHERE email = $1 AND purpose = $2 AND expires_at > NOW()', [email, 'reset_password']);
     return success(res, { message: 'Password reset successfully' });    
 };
