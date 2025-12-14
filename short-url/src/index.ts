@@ -3,35 +3,33 @@ export default {
 	  const url = new URL(req.url);
 	  const shortCode = url.pathname.slice(1);
   
-	  // No shortcode → 404
 	  if (!shortCode) {
 		return new Response("Not Found", { status: 404 });
 	  }
   
-	  // 1️⃣ Try KV cache
-	  const cached = await env.SHORT_URLS.get(shortCode);
+	  // 1️⃣ Try KV
+	  const cached = await env.SHORT_URLS_REDIRECT.get(shortCode);
 	  if (cached) {
 		return Response.redirect(cached, 302);
 	  }
   
-	  // 2️⃣ Fallback to backend
-	  const apiResp = await fetch(
-		`${env.API_BASE_URL}/resolve/${shortCode}`,
-		{ method: "GET" }
+	  // 2️⃣ Fallback to backend (CORRECT PATH)
+	  const resp = await fetch(
+		`${env.API_URL}/short-url/${shortCode}`
 	  );
   
-	  if (!apiResp.ok) {
+	  if (!resp.ok) {
 		return new Response("Not Found", { status: 404 });
 	  }
   
-	  const data = await apiResp.json() as { url: string };
+	  const data = await resp.json() as { url: string };
   
 	  if (!data.url) {
 		return new Response("Invalid response", { status: 500 });
 	  }
   
 	  // 3️⃣ Cache + redirect
-	  await env.SHORT_URLS.put(shortCode, data.url, {
+	  await env.SHORT_URLS_REDIRECT.put(shortCode, data.url, {
 		expirationTtl: 3600
 	  });
   
@@ -40,7 +38,7 @@ export default {
   };
   
   interface Env {
-	SHORT_URLS: KVNamespace;
-	API_BASE_URL: string;
+	SHORT_URLS_REDIRECT: KVNamespace;
+	API_URL: string;
   }
   

@@ -45,7 +45,10 @@ export const redirectShortUrlController = async (req: Request, res: Response) =>
             const cachedData = JSON.parse(cached);
             const meta = extractAccessMeta(req);
             recordShortUrlAccess(cachedData.id, meta);
-            return redirect(res, cachedData.url);
+            return res.status(200).json({
+                url: cachedData.url,
+            });
+            // return redirect(res, cachedData.url);
         }
     } catch (err) {
         // Redis failure is ignored
@@ -91,7 +94,11 @@ export const redirectShortUrlController = async (req: Request, res: Response) =>
         if(shortUrlData.long_url) {
             const meta = extractAccessMeta(req);
             recordShortUrlAccess(shortUrlData.id, meta);
-            return redirect(res, shortUrlData.long_url);
+            return res.status(200).json({
+                url: shortUrlData.long_url,
+            });
+            
+            // return redirect(res, shortUrlData.long_url);
         }
     
     } catch (err) {

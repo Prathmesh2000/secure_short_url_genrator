@@ -1,9 +1,9 @@
 name = "short-url-redirect"
-main = "src/index.ts"
+main = "short-url/src/index.ts"
 compatibility_date = "2025-12-13"
 
 kv_namespaces = [
-  { binding = "SHORT_URLS", id = "520c043ff3654f75b460bc513d990ff1" }
+  { binding = "SHORT_URLS_REDIRECT", id = "607a0dadd70149759a841ff80925e80e" }
 ]
 
 [vars]
