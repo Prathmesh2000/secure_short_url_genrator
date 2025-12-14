@@ -43,12 +43,13 @@ export const redirectShortUrlController = async (req: Request, res: Response) =>
 
         if (cached) {
             const cachedData = JSON.parse(cached);
+            const ttl = await redis.ttl(redisKey); // Get remaining TTL in seconds (-1 if no expiry, -2 if key doesn't exist)
             const meta = extractAccessMeta(req);
             recordShortUrlAccess(cachedData.id, meta);
             return res.status(200).json({
                 url: cachedData.url,
+                ttl: ttl > 0 ? ttl : null, // Return TTL in seconds, or null if no expiry
             });
-            // return redirect(res, cachedData.url);
         }
     } catch (err) {
         // Redis failure is ignored
@@ -96,11 +97,9 @@ export const redirectShortUrlController = async (req: Request, res: Response) =>
             recordShortUrlAccess(shortUrlData.id, meta);
             return res.status(200).json({
                 url: shortUrlData.long_url,
+                ttl: ttl > 0 ? ttl : null,
             });
-            
-            // return redirect(res, shortUrlData.long_url);
-        }
-    
+        }    
     } catch (err) {
         console.error('[REDIS] error', err);
     }

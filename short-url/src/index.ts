@@ -7,13 +7,13 @@ export default {
 		return new Response("Not Found", { status: 404 });
 	  }
   
-	  // 1️⃣ Try KV
+	  // Try KV
 	  const cached = await env.SHORT_URLS_REDIRECT.get(shortCode);
 	  if (cached) {
 		return Response.redirect(cached, 302);
 	  }
   
-	  // 2️⃣ Fallback to backend (CORRECT PATH)
+	  // Fallback to backend (CORRECT PATH)
 	  const resp = await fetch(
 		`${env.API_URL}/short-url/${shortCode}`
 	  );
@@ -22,15 +22,15 @@ export default {
 		return new Response("Not Found", { status: 404 });
 	  }
   
-	  const data = await resp.json() as { url: string };
+	  const data = await resp.json() as { url: string, ttl: number };
   
 	  if (!data.url) {
 		return new Response("Invalid response", { status: 500 });
 	  }
   
-	  // 3️⃣ Cache + redirect
+	  // Cache + redirect
 	  await env.SHORT_URLS_REDIRECT.put(shortCode, data.url, {
-		expirationTtl: 3600
+		expirationTtl: data.ttl ? data.ttl : 3600
 	  });
   
 	  return Response.redirect(data.url, 302);
