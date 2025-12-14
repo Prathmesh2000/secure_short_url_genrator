@@ -1,0 +1,10 @@
+name = "short-url-redirect"
+main = "src/index.ts"
+compatibility_date = "2025-12-13"
+
+kv_namespaces = [
+  { binding = "SHORT_URLS", id = "520c043ff3654f75b460bc513d990ff1" }
+]
+
+[vars]
+API_URL = "https://short-url-api.com"

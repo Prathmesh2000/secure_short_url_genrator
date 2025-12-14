@@ -33,6 +33,7 @@ class ConflictError extends AppError {
     constructor(message: string = 'Conflict') {
         super(message, HttpStatusCodes.CONFLICT);
     }
+}
 
 export {
     AppError,

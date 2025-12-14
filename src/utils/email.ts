@@ -49,11 +49,12 @@ export async function sendOtpEmail(
   to: string,
   otp: string,
   purpose: OtpPurpose
-): Promise<void> {
-  await resend.emails.send({
+): Promise<string | null> {
+  const result = await resend.emails.send({
     from: process.env.EMAIL_FROM!,
     to,
     subject: getSubject(purpose),
     text: getBody(otp, purpose)
   });
+  return result?.data?.id || null;
 }
